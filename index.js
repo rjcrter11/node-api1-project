@@ -1,5 +1,6 @@
 const express = require("express");
-const shortId = require("shortid");
+const cors = require("cors");
+//const shortId = require("shortid");
 
 const server = express();
 
@@ -7,6 +8,7 @@ let users = [];
 let nextId = 1;
 
 server.use(express.json());
+server.use(cors());
 
 server.post("/api/users", (req, res) => {
   const userInfo = req.body;
