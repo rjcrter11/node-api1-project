@@ -11,7 +11,14 @@ const initialValues = {
 function App() {
   const [users, setUsers] = useState([]);
   const [addUser, setAddUser] = useState(initialValues);
+  const [editing, setEditing] = useState(false);
+
   console.log(users);
+
+  const editUser = (user) => {
+    setEditing(true);
+    setAddUser(user);
+  };
 
   const fetchUsers = () => {
     axios
@@ -23,9 +30,9 @@ function App() {
       .catch((err) => console.log(err));
   };
 
-  // useEffect(() => {
-  //   fetchUsers();
-  // }, []);
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   const createUser = (e) => {
     e.preventDefault();
@@ -48,6 +55,16 @@ function App() {
       })
       .catch((err) => console.log(err));
   };
+  const saveEdit = (e) => {
+    e.preventDefault();
+    axios
+      .put(`http://localhost:5000/api/users/${users.id}`, addUser)
+      .then((res) => {
+        console.log("edit response", res);
+        setEditing(false);
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className="App">
@@ -66,9 +83,13 @@ function App() {
               >
                 x
               </span>
+              <button type="button" onClick={() => editUser(user)}>
+                Edit User
+              </button>
             </div>
           ))}
       </div>
+
       <form onSubmit={createUser}>
         <label htmlFor="name">Name: </label>
         <input

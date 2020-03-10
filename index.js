@@ -71,6 +71,35 @@ server.delete("/api/users/:id", (req, res) => {
   }
 });
 
+server.put("/api/users/:id", (req, res) => {
+  const userId = req.params.id;
+  const userInfo = req.body;
+
+  if (!userId)
+    res
+      .status(400)
+      .json({ message: "The user with the specified ID does not exist" });
+
+  if (!userInfo.name || !userInfo.bio) {
+    res
+      .status(400)
+      .json({ errorMessage: "Please provide name and bio for the user" });
+  }
+
+  if (!userInfo) {
+    res.status(500).json({
+      errorMessage: "There was an error while saving the user to the database"
+    });
+  }
+  users = users.map((user) => {
+    if (`${user.id}` === userId) {
+      return userInfo;
+    }
+    return user;
+  });
+  res.status(202).json(userInfo);
+});
+
 const PORT = 5000;
 server.listen(PORT, () =>
   console.log(`\n ** API on http://localhost:${PORT} ** \n`)

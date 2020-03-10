@@ -24,3 +24,8 @@
   margin: 2% 0;
   padding: 3% 2%;
 }
+
+.delete {
+  cursor: pointer;
+  color: red;
+}
